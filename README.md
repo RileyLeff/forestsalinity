@@ -1,4 +1,4 @@
-# Forest Salinity
+# Forest Salinity 🌲🧂
 
 Here is the code that I have been using to analyze the tree susceptibility to salt.
 
