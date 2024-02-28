@@ -3,10 +3,18 @@
 repos:
 -   repo: local
     hooks:
-      - id: local-style-script
-        name: local-style-script
-        entry: Rscript .hooks/local/style-hook.R
-        language: system 
+     -  id: style_dir
+        name: style_dir
+        description: run `style::style_dir(".")`
+        entry: bash .hooks/local/style_dir.sh
+        language: system
+        minimum_pre_commit_version: "2.13.0"
+     -  id: deny_setwd
+        name: deny_setwd
+        description: deny setwd() from being committed into codebase
+        entry: bash .hooks/local/deny_setwd.sh
+        language: system
+        minimum_pre_commit_version: "2.13.0"
 -   repo: https://github.com/lorenzwalthert/precommit
     rev: v0.4.0
     hooks: 
