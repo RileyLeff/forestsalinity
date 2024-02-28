@@ -15,15 +15,15 @@ repos:
         entry: bash .hooks/local/deny_setwd.sh
         language: system
         minimum_pre_commit_version: "2.13.0"
--   repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.4.0
-    hooks: 
-#    -   id: style-files  
-#    -   id: lintr
-    -   id: readme-rmd-rendered
-    -   id: parsable-R
-    -   id: no-browser-statement
-    -   id: no-debug-statement
+# -   repo: https://github.com/lorenzwalthert/precommit
+#     rev: v0.4.0
+#     hooks: 
+# #    -   id: style-files  
+# #    -   id: lintr
+#     -   id: readme-rmd-rendered
+#     -   id: parsable-R
+#     -   id: no-browser-statement
+#     -   id: no-debug-statement
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks: 
