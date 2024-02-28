@@ -30,4 +30,5 @@ Roxygen: list(markdown = TRUE)
 Suggests: 
     languageserver,
     precommit,
-    rmarkdown
+    rmarkdown,
+    usethis
