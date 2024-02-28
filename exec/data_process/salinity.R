@@ -1,4 +1,4 @@
-rawdata <- lapply(
+raw_data <- lapply(
   X = list.files("data/raw", full.names = TRUE),
   FUN = read.csv
 )
