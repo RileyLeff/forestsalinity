@@ -1,0 +1,32 @@
+Title: forestsalinity
+Version: 0.1.0
+Date: 2024-02-26
+Authors@R: 
+    c(
+        person(
+            given = "Keryn", 
+            family = "Gedan", 
+            email = "kgedan@gwu.edu", 
+            role = c("aut", "cre"),
+            comment = c(ORCID = "0000-0003-4020-5441")
+        ),
+        person(
+            given = "Riley", 
+            family = "Leff", 
+            email = "rileyleff@gmail.com", 
+            role = c("aut", "cre")
+            comment = c(ORCID = "0000-0001-6171-9594")
+        )
+    )
+Description: Forest salinity analysis project.
+URL: https://github.com/rileyleff/forestsalinity
+BugReports: https://github.com/rileyleff/forestsalinity/issues/
+License: MIT + file LICENSE
+Depends: R (>= 3.1)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2
+Roxygen: list(markdown = TRUE)
+Suggests: 
+    languageserver,
+    precommit

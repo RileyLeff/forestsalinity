@@ -1,4 +1,4 @@
-﻿Date,Site ,Habitat,Plot ,Replicate,ID,EC_ms/cm_2023,Salinity_ppt
+﻿date,site,zone,plot,replicate,id,ec_ms/cm,salinity_ppt
 8/1/23,Brownsville,H,0,A,BVL_H_0_A,9.99,0.47
 8/1/23,Brownsville,H,0,B,BVL_H_0_B,1.046,0.52
 8/1/23,Brownsville,H,1,A,BVL_H_1_A,4.47,2.23

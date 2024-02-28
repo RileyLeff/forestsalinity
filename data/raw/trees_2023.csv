@@ -1,4 +1,4 @@
-Year,Month ,Day ,Level,Plot,Tree Number,Tree Code ,Trunk Number,Species,DBH (mm),Health (dead=0),alive:1 or dead:0,old_tag,standing:1 or fallen:0,notes
+year,month,day,level,plot,tree_number,tree_code,trunk_number,spp,dbh_mm,health,alive,old_tag,standing,notes
 2020,na,na,H,H5,559,H5_559_Ace,1,Acer rubrum,405,0,0,,,dead
 2020,na,na,H,H4,120,H4_120_Ace,1,Acer rubrum,158,0,0,,,dead
 2020,na,na,H,H4,131,H4_131_Ace,1,Acer rubrum,278,0,0,,,same bark. dead

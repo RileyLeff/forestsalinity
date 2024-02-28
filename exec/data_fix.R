@@ -1,0 +1,5 @@
+sosa_22 <- read.csv("data/raw/soil_salinity_2022_aliya.csv")
+sosa_23 <- read.csv("data/raw/soil_salinity_2023_noa.csv")
+trees <- read.csv("data/raw/trees_2023.csv")
+porewater <- read.csv("data/raw/forest_disturbance_plot_porewater_salinity_2019_2023.csv")
+porewater_bv <- read.csv("data/raw/porewater_salinity_brownsville_2023.csv")

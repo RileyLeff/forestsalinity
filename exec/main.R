@@ -1,14 +1,12 @@
 library("dplyr")
 library("ggplot2")
 
-### soil salinity vs. porewater salinity in 2023 #####
+# This needs to be its own data manipulation thing
 soil <- read.csv("data/soil salinity 2023_Noa.csv")
-str(soil)
 soil$date <- lubridate::mdy(soil$date)
 soil$replicate <- as.factor(soil$replicate)
 
 pore <- read.csv("data/Porewater_Salinity_Brownsville_2023.csv")
-str(pore)
 pore$Date <- lubridate::mdy(pore$Date)
 pore <- pore %>% filter(ID != "BVL_H__C")
 
@@ -17,7 +15,7 @@ pore$Replicate <- as.factor(pore$Replicate)
 
 
 
-# summarize by plot
+# idk what's going on here with the plots
 ppt_plot <- soil %>%
   group_by(plot) %>%
   summarise(soil_ppt = mean(Salinity_ppt, na.rm = T))
@@ -36,9 +34,6 @@ ggplot(ppt_plot, aes(soil_ppt, pore_ppt)) +
   geom_text(label = ppt_plot$plot, nudge_x = 0.25, nudge_y = 0, check_overlap = T, size = 6) +
   ggtitle("2023 soil (1:5 soil saturation) and porewater salinity (ppt)") +
   theme_classic(base_size = 20)
-
-m1 <- lm(pore_ppt ~ 0 + soil_ppt, data = ppt_plot) # intercept forced through 0
-summary(m1)
 
 # Compare 2022 and 2023
 soil2022 <- read.csv("data/soil salinity 2022_Aliya.csv", stringsAsFactors = T)

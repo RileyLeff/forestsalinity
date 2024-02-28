@@ -1,0 +1,1 @@
+ec_to_salinity_conversion = 0.495 # ec in ms/cm * 0.495 = salinity in ppt
