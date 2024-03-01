@@ -50,3 +50,6 @@ po/*~
 
 # RStudio Connect folder (shame)
 rsconnect/
+
+# old code 
+old_stuff
