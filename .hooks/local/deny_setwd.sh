@@ -1,6 +1,6 @@
 #!/bin/bash
 
-files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(R|r|rmd|RMD)$')
+files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(R|r|rmd|RMD)$' | grep -v 'renv/')
 
 if [ -n "$files" ]; then
     forbidden=$(grep -nH --color=always "setwd(" $files)
