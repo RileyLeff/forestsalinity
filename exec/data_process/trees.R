@@ -23,11 +23,8 @@ tree_census$date <- as.Date(
 tree_census$alive <- as.logical(tree_census$alive)
 tree_census$standing <- as.logical(tree_census$standing)
 
-tree_census$plot <- as.factor(tree_census$plot)
-tree_census$tree_number <- as.factor(tree_census$tree_number)
-tree_census$tree_code <- as.factor(tree_census$tree_code)
-tree_census$trunk_number <- as.factor(tree_census$trunk_number)
-tree_census$spp <- as.factor(tree_census$spp)
+convert_to_factor <- c("plot", "tree_number", "tree_code", "trunk_number", "spp")
+for (column in convert_to_factor) tree_census[, column] <- as.factor(tree_census[, column])
 
 tree_census$site <- as.factor(rep("BRNV", nrow(tree_census)))
 
