@@ -1,9 +1,11 @@
+RcppTOML::parseToml("data/constants.toml")
+
 tree_census <- read.csv(
   file = "data/raw/forest_census/trees_2023.csv",
   na.strings = c("NA", "na", "NA ")
 )
 
-tree_census$zone <- factor(tree_census$level, levels = c("H", "M", "L"), ordered = TRUE)
+tree_census$zone <- factor(tree_census$level, levels = constants$zone_levels, ordered = TRUE)
 
 # !!! NOTE: completely arbitrary decision to fill in missing dates with the middle of the month
 tree_census$day[which(is.na(tree_census$day))] <- 15
@@ -23,7 +25,9 @@ tree_census$date <- as.Date(
 tree_census$alive <- as.logical(tree_census$alive)
 tree_census$standing <- as.logical(tree_census$standing)
 
-convert_to_factor <- c("plot", "tree_number", "tree_code", "trunk_number", "spp")
+tree_census$plot <- factor(tree_census$plot, levels = constants$plot_levels)
+
+convert_to_factor <- c("tree_number", "tree_code", "trunk_number", "spp")
 for (column in convert_to_factor) tree_census[, column] <- as.factor(tree_census[, column])
 
 tree_census$site <- as.factor(rep("BRNV", nrow(tree_census)))
