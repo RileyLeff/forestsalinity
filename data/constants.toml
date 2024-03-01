@@ -1,2 +1,2 @@
 # electrical conductivity in ms/cm * 0.495 = salinity in ppt
-ec_to_salinity_conversion = 0.495 
+ec_ms_cm_to_ppt_conversion = 0.495 
