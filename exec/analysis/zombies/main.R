@@ -1,4 +1,7 @@
+# for now, always read in data when running zombies
 source("exec/data_process/main.R")
+
+# adds get_tree_codes_by_status() to environment
 source("exec/analysis/zombies/util.R")
 
 zombie_tree_codes <- get_tree_codes_by_status(
