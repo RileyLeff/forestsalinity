@@ -1,3 +1,5 @@
+library(dplyr)
+
 check_alive_vs_health <- function(df) {
   if (nrow(df %>% filter((!alive) & (health > 0))) > 0) {
     stop("Some trees have alive = 0 and health scores > 0. That doesn't make sense.")
