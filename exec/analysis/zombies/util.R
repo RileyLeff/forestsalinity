@@ -24,7 +24,8 @@ get_status_by_tree_code <- function(df, trunk_num = 1) {
   )
 }
 
-# don't call this directly, it will be get confused by trunk_number
+# don't call this function directly, it will be get confused by trunk_number
+# interact with this through the wrapper get_zombie_tree_codes()
 .internal_status_finder <- function(df) {
   lapply(
     X = df,
