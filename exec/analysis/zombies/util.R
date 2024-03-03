@@ -1,9 +1,10 @@
 library(dplyr)
 
 # returns a vector of tree IDs that demonstrate zombification at any point in the survey
-get_zombie_tree_codes <- function(df, trunk_num = 1) {
+# status is one of "zombie", "dead non-zombie", or "alive"
+get_tree_codes_by_status <- function(df, trunk_num = 1, status = "zombie") {
   statuses <- get_status_by_tree_code(df, trunk_num)
-  names(statuses[which(statuses == "zombie")])
+  names(statuses[which(statuses == status)])
 }
 
 # returns a list that maps tree_code as a name to one of "alive", "dead non-zombie", or "zombie" as a value.
