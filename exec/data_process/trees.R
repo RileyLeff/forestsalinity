@@ -31,8 +31,8 @@ tree_census$plot <- factor(tree_census$plot, levels = constants$plot_levels)
 
 tree_census$spp[which(tree_census$spp == "Unidentifiable")] <- "Unidentifiable spp."
 split_spp <- strsplit(tree_census$spp, split = " ")
-tree_census$genus <- sapply(split_spp, `[`, 1)
-tree_census$spp <- sapply(split_spp, `[`, 2)
+tree_census$genus <- as.factor(sapply(split_spp, `[`, 1))
+tree_census$spp <- as.factor(sapply(split_spp, `[`, 2))
 
 convert_to_factor <- c("tree_number", "tree_code", "trunk_number", "spp")
 for (column in convert_to_factor) tree_census[, column] <- as.factor(tree_census[, column])
