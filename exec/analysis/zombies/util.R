@@ -7,9 +7,8 @@ get_tree_codes_by_status <- function(df, trunk_num = 1, status = "zombie") {
   names(statuses[which(statuses == status)])
 }
 
-# returns a list that maps tree_code as a name to one of "alive", "dead non-zombie", or "zombie" as a value.
-# learning rust completely changed the way I think about programming in other languages
-# i.e. this would return an enum called TreeStatus in rust
+# returns a list that maps tree_code as a status.
+# status is a character vector, one of "alive", "dead non-zombie", or "zombie" as a value.
 get_status_by_tree_code <- function(df, trunk_num = 1) {
   filtered_df <- as.data.frame(
     df %>%

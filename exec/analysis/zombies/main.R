@@ -6,3 +6,9 @@ zombie_tree_codes <- get_tree_codes_by_status(
   trunk_num = 1,
   status = "zombie"
 )
+
+dead_tree_codes <- get_tree_codes_by_status(
+  df = tree_census,
+  trunk_num = 1,
+  status = "dead non-zombie"
+)
