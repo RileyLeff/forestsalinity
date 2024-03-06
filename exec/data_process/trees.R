@@ -9,7 +9,7 @@ tree_census <- read.csv(
 tree_census <- tree_census_column_cleanup(tree_census)
 
 # fixes one-offs like swapped tags
-tree_census <- fix_one_off_problems_manually(df)
+tree_census <- fix_one_off_problems_manually(tree_census)
 
 # when possible, fixes disagreement between alive and health column
 tree_census <- make_alive_and_health_consistent(tree_census)
@@ -18,13 +18,15 @@ tree_census <- make_alive_and_health_consistent(tree_census)
 # provides context for cases with NA present
 na_map <- na_identifier(df, trunk_num)
 
-# handles missing data in "alive" column.
+# handles missing data in "alive" column, based on the historic/future context of the "tree_code"
 # optionally interpolates missing dbh and/or health as well in certain cases.
 tree_census <- handle_na_cases_by_context(
   df = tree_census,
+  na_map = na_map,
   trunk_num = 1,
   interpolate = TRUE,
-  to_interpolate = c("dbh_mm", "health")
+  to_interpolate = c("dbh_mm", "health"),
+  remove_tree_codes_with_all_nas = TRUE,
 )
 
 # ensures no 0 health scores for alive, no > 0 health for dead. will throw error if violated
