@@ -1,3 +1,5 @@
+constants <- RcppTOML::parseToml("data/constants.toml")
+
 # example usage:
 # clean_path("my/crazy/path/to/a/thing.jpeg")
 #
@@ -10,6 +12,52 @@ clean_path <- function(path) {
       path
     )
   )
+}
+
+get_status <- function(d, lut) {
+  matches <- sapply(
+    names(lut),
+    function(status_name) {
+      lut[[status_name]]$condition_check(d)
+    }
+  )
+
+  if (length(which(matches)) != 1) {
+    stop(
+      paste(
+        "ERROR: condition_check TRUE in ",
+        length(which(matches)),
+        " cases. Data is: ",
+        paste(d, collapse = ", "),
+        " and the conditions are: ",
+        paste(names(matches[which(matches)]), collapse = ", "),
+        sep = ""
+      )
+    )
+  }
+  return(names(matches)[which(matches)])
+}
+
+
+fix_column_by_map <- function(df, column, lut) {
+  xdfl <- split_df(df)
+
+  status <- sapply(
+    names(xdfl),
+    function(x) {
+      get_status(xdfl[[x]][, column], lut)
+    }
+  )
+
+  needs_fix <- names(status)[which(status != "ok")]
+
+  for (id in needs_fix) {
+    # produce a "fixed" column by running the "unfixed" data through the appropriate handler fn
+    fixed_column_data <- lut[[status[id]]]$handler(xdfl[[id]][, column])
+    xdfl[[id]][, column] <- fixed_column_data
+  }
+
+  return(unsplit(xdfl, df$tree_code))
 }
 
 # example usage:
@@ -65,13 +113,13 @@ split_df <- function(
     split_by = "tree_code",
     trunk_num = 1,
     sort = TRUE,
-    filter_trunk = TRUE) {
+    filter_trunk = FALSE) {
   if (filter_trunk) {
-    df <- df %>% filter(trunk_number == trunk_num)
+    df <- df[df$trunk_number == trunk_num, ]
   }
 
   if (sort) {
-    df <- df %>% arrange(date)
+    df <- df[order(df$date), ]
   }
 
   return(split(df, df[, split_by]))

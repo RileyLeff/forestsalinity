@@ -4,7 +4,7 @@ source("exec/data_process/util/helpers.R")
 # adds utility functions to format each dataset to the global environment
 # also adds a map that pairs each dataset with its corresponding formatter function to the env
 # this is called salinity_data_format_map
-source("exec/data_process/util/salinity_helpers.R")
+source("exec/data_process/salinity/helpers.R")
 
 # read salinity datasets into a list and name them by path
 salinity_paths <- list.files("data/raw/salinity", full.names = TRUE)

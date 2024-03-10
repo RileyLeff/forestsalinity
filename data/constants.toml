@@ -2,8 +2,12 @@
 ec_ms_cm_to_ppt_conversion = 0.495 
 
 # brownsville plot ids
-plot_levels = ["R0", "R1", "R2", "R3", "H0", "H1", "H2", "H3", "H4", "H5", "H6", "H7", "M0", "M1", 
-  "M2", "M3", "M4", "M5", "M6", "M7", "L0", "L1", "L2", "L3", "L4", "L5", "L6", "L7"]
+# why is R plot indexed from 1 when others indexed from 0?
+plot_levels = ["R1", "R2", "R3", "R4", "H0", "H1", "H2", "H3", "H4", "H5", "H6", "H7", "M0", 
+  "M1", "M2", "M3", "M4", "M5", "M6", "M7", "L0", "L1", "L2", "L3", "L4", "L5", "L6", "L7"]
 
 # brownsville zone ids
 zone_levels = ["R", "H", "M", "L"]
+
+# different representations of "NA" in the dataset
+na_reprs = ["NA", "na", "NA"]

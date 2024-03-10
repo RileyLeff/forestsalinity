@@ -1,4 +1,4 @@
-tree_census_column_cleanup <- function(df) {
+format_trees_2023 <- function(df) {
   df$zone <- factor(df$level, levels = constants$zone_levels, ordered = TRUE)
 
   # !!! NOTE: completely arbitrary decision to fill in missing dates with the middle of the month

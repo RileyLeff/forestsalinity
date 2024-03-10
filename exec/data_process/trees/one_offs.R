@@ -16,8 +16,16 @@ fix_one_off_problems_manually <- function(df) {
   df$tree_code[row_to_swap_into_508] <- "H4_508_Pin"
   df$tree_number[row_to_swap_into_508] <- 508
 
+  # Fix Misidentififed Stem On M2_2421_Nys: wrongly labeled as having 3 stems.
+  #   "third stem" pops up one year but mysteriously has same dbh as another stem that
+  #   was not measured that year. too large to be new growth. notes say two stems.
+  row_to_fix_trunk_number <- which(
+    (df$date == as.Date("2020-06-15")) &
+      (df$tree_code == "M2_2421_Nys")
+  )
+  df$trunk_number[row_to_fix_trunk_number] <- 2
 
-  # Future one-off fixes go here
+  # Future one-off fixes go here WITH A GOOD EXPLANATION!
 
   return(df)
 }
