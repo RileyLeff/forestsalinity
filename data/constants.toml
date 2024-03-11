@@ -10,4 +10,4 @@ plot_levels = ["R1", "R2", "R3", "R4", "H0", "H1", "H2", "H3", "H4", "H5", "H6",
 zone_levels = ["R", "H", "M", "L"]
 
 # different representations of "NA" in the dataset
-na_reprs = ["NA", "na", "NA"]
+na_reprs = ["NA", "na", "NA "]
