@@ -16,6 +16,9 @@ tree_census <- do.call(
   )
 )
 
+# sort by date and trunk_number
+tree_census <- tree_census[order(tree_census$date, tree_census$trunk_number), ]
+
 # fixes one-offs like swapped tags
 source("exec/data_process/trees/one_offs.R")
 tree_census <- fix_one_off_problems_manually(tree_census)
@@ -38,15 +41,13 @@ tree_census <- fix_column_by_map(
 # when possible, fixes disagreement between alive and health column
 source("exec/data_process/trees/alive_and_health_consistent.R")
 tree_census <- make_alive_and_health_consistent(tree_census)
-check_alive_and_health_are_consistent(tree_census) # will throw error if something wrong
+check_alive_and_health_are_consistent(tree_census) # will throw error if something wrong w cleanup
 
-# Under construction: bringing this up to speed with the trunk_number fixes
-
-# # handles missing data in "alive" column, based on the historic/future context of the "tree_code"
-# source("exec/data_process/trees/alive_na.R")
-# tree_census <- fix_column_by_map(
-#   tree_census,
-#   paste(tree_census$tree_code, tree_census$trunk_number, sep = "_"),
-#   "alive",
-#   alive_na_status_map
-# )
+# handles missing data in "alive" column, based on the historic/future context of the "tree_code"
+source("exec/data_process/trees/alive_na.R")
+tree_census <- fix_column_by_map(
+  tree_census,
+  paste(tree_census$tree_code, tree_census$trunk_number, sep = "_"),
+  "alive",
+  alive_na_status_map
+)
