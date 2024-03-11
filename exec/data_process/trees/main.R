@@ -22,30 +22,31 @@ tree_census <- fix_one_off_problems_manually(tree_census)
 
 # repairs NAs and re-orders trunk # when appropriate.
 source("exec/data_process/trees/trunk_number.R")
-tree_census <- fix_column_by_map(tree_census, "trunk_number", trunk_na_status_map) # for NAs
-tree_census <- fix_column_by_map(tree_census, "trunk_number", trunk_number_status_map) # for numbers
+tree_census <- fix_column_by_map(
+  tree_census,
+  tree_census$tree_code,
+  "trunk_number",
+  trunk_na_status_map
+)
+tree_census <- fix_column_by_map(
+  tree_census,
+  tree_census$tree_code,
+  "trunk_number",
+  trunk_number_status_map
+)
 
 # when possible, fixes disagreement between alive and health column
 source("exec/data_process/trees/alive_and_health_consistent.R")
 tree_census <- make_alive_and_health_consistent(tree_census)
+check_alive_and_health_are_consistent(tree_census) # will throw error if something wrong
 
-# categorizes tree codes according to data availability in the alive column
-# provides context for cases with NA present
-na_map <- na_identifier(df, trunk_num)
+# Under construction: bringing this up to speed with the trunk_number fixes
 
-# handles missing data in "alive" column, based on the historic/future context of the "tree_code"
-# optionally interpolates missing dbh and/or health as well in certain cases.
-tree_census <- handle_na_cases_by_context(
-  df = tree_census,
-  na_map = na_map,
-  trunk_num = 1,
-  interpolate = TRUE,
-  to_interpolate = c("dbh_mm", "health"),
-  remove_tree_codes_with_all_nas = TRUE,
-)
-
-# ensures no 0 health scores for alive, no > 0 health for dead. will throw error if violated
-check_alive_and_health_are_consistent(tree_census)
-
-# ensures no trees are NA in alive col. will throw error if violated.
-check_if_na_in_alive(tree_census, trunk_num = 1)
+# # handles missing data in "alive" column, based on the historic/future context of the "tree_code"
+# source("exec/data_process/trees/alive_na.R")
+# tree_census <- fix_column_by_map(
+#   tree_census,
+#   paste(tree_census$tree_code, tree_census$trunk_number, sep = "_"),
+#   "alive",
+#   alive_na_status_map
+# )

@@ -38,11 +38,11 @@ make_alive_and_health_consistent <- function(df) {
 }
 
 check_alive_and_health_are_consistent <- function(df) {
-  if (nrow(df %>% filter((!alive) & (health > 0))) > 0) {
+  if (nrow(df[which((!df$alive) & (df$health > 0)), ]) > 0) {
     stop("Some trees have alive = 0 and health scores > 0. That doesn't make sense.")
   }
 
-  if (nrow(df %>% filter((alive) & (health == 0))) > 0) {
+  if (nrow(df[which((df$alive) & (df$health == 0)), ]) > 0) {
     stop("Some trees are marked alive = 1 and health scores = 0. That doesn't make sense.")
   }
 }

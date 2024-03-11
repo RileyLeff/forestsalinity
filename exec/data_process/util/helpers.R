@@ -39,8 +39,8 @@ get_status <- function(d, lut) {
 }
 
 
-fix_column_by_map <- function(df, column, lut) {
-  xdfl <- split_df(df)
+fix_column_by_map <- function(df, split_by, column, lut) {
+  xdfl <- split(df, split_by)
 
   status <- sapply(
     names(xdfl),
@@ -57,7 +57,7 @@ fix_column_by_map <- function(df, column, lut) {
     xdfl[[id]][, column] <- fixed_column_data
   }
 
-  return(unsplit(xdfl, df$tree_code))
+  return(unsplit(xdfl, split_by))
 }
 
 # example usage:

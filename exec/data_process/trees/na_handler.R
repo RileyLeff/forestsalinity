@@ -54,9 +54,6 @@ na_seq_status_map <- list(
     ),
 )
 
-
-
-
 identify_na_context <- function(na_seq, df) {
     if(na_seq[["start"]] == 1) {
         na_seq$before = "none"
