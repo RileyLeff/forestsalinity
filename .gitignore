@@ -53,3 +53,9 @@ rsconnect/
 
 # old code 
 old_stuff
+
+# env, for noaa api key
+.env
+*.env
+ENV
+env
