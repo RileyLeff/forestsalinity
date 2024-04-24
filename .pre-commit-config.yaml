@@ -15,6 +15,12 @@ repos:
         entry: bash .hooks/local/deny_setwd.sh
         language: system
         minimum_pre_commit_version: "2.13.0"
+     -  id: generate_readme_from_rmd
+        name: generate_readme_from_rmd
+        description: turn the readme.rmd into a github-flavored readme.md
+        entry: bash .hooks/local/style_dir.sh
+        language: system
+        minimum_pre_commit_version: "2.13.0"
 # -   repo: https://github.com/lorenzwalthert/precommit
 #     rev: v0.4.0
 #     hooks: 
