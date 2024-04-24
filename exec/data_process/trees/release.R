@@ -8,10 +8,12 @@ write.csv(
   paste(output_dir, "tree_census.csv", sep = "/")
 )
 
-arrow::write_parquet(
-  tree_census,
-  paste(output_dir, "tree_census.parquet", sep = "/")
-)
+# will come back to this once i have a chance to figure out the missing sys dependencies
+
+# arrow::write_parquet(
+#   tree_census,
+#   paste(output_dir, "tree_census.parquet", sep = "/")
+# )
 
 saveRDS(
   tree_census,
