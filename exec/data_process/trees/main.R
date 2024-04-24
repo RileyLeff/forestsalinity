@@ -51,3 +51,6 @@ tree_census <- fix_column_by_map(
   "alive",
   alive_na_status_map
 )
+
+# remove ugly rownames
+rownames(tree_census) <- NULL
