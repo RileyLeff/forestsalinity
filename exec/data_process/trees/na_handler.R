@@ -25,7 +25,7 @@ status_map <- list(
 
 na_seq_status_map <- list(
     "between true and true" = list(
-        condition_check = function(x) return(NA)
+        condition_check = function(x) return(NA),
         handler = NA,
     ),
     "between true and false" = list(
