@@ -26,7 +26,7 @@ jobs:
 
     - name: Test Step Make Sure Outputs Exist
       run: |
-        ls -la
+        ls output -la
 
     - name: Create Release
       id: create_release
