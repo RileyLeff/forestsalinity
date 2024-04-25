@@ -26,14 +26,11 @@ jobs:
 
     - name: Test Step Make Sure Outputs Exist
       run: |
-        cat output/tree_census.csv
         ls -la
 
     - name: Create Release
       id: create_release
       uses: softprops/action-gh-release@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
         body: Gedan lab tree census as of forestsalinity version ${{ github.ref }}
@@ -42,3 +39,4 @@ jobs:
           output/tree_census.rds
         draft: true
         prerelease: true
+        token: ${{ secrets.GITHUB_TOKEN }}
