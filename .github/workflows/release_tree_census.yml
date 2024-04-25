@@ -37,6 +37,4 @@ jobs:
         files: |
           output/tree_census.csv
           output/tree_census.rds
-        draft: true
-        prerelease: true
         token: ${{ secrets.GITHUB_TOKEN }}
