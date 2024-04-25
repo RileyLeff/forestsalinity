@@ -24,6 +24,11 @@ jobs:
       run: |
         Rscript exec/data_process/trees/release.R
 
+    - name: Test Step Make Sure Outputs Exist
+      run: |
+        cat output/tree_census.csv
+        ls -la
+
     - name: Create Release
       id: create_release
       uses: softprops/action-gh-release@v2
