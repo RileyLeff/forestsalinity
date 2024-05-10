@@ -1,3 +1,5 @@
 # Forest Salinity 🌲🧂
 
 Gedan Lab forest mortality survey. Docs to come.
+
+Working on accouning for zombie trees in mortality rates.
