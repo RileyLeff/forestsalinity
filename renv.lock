@@ -140,13 +140,6 @@
       ],
       "Hash": "33698c4b3127fc9f506654607fb73676"
     },
-    "dotenv": {
-      "Package": "dotenv",
-      "Version": "1.0.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "7e1213a65b6190437c644a14ec814ef3"
-    },
     "dplyr": {
       "Package": "dplyr",
       "Version": "1.1.4",
@@ -444,13 +437,8 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "1.0.9",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "utils"
-      ],
-      "Hash": "ef233f0e9064fc88c898b340c9add5c2"
+      "Version": "1.1.4",
+      "Source": "Repository"
     },
     "rlang": {
       "Package": "rlang",

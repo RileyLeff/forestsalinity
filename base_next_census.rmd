@@ -1,6 +1,7 @@
 ---
 title: PLOTNAMEPLACEHOLDER
 output: pdf_document
+geometry: "margin=0.5in" # Added this line
 header-includes:
   - \usepackage{booktabs}
   - \usepackage{longtable}
@@ -11,7 +12,7 @@ header-includes:
   - \usepackage{float}
   - \usepackage{colortbl}
   - \usepackage{pdflscape}
-  - \usepackage{tabu}
+#  - \usepackage{tabu}
   - \usepackage{threeparttable}
   - \usepackage{threeparttablex}
   - \usepackage[normalem]{ulem}
@@ -56,15 +57,27 @@ this_df <- z[["PLOTNAMEPLACEHOLDER"]]
 
 this_df[is.na(this_df)] <- ""
 
+num_cols <- ncol(this_df)
+
 this_df %>%
-  kable("latex", booktabs = TRUE, longtable = TRUE, linesep = "") %>%
+  kable("latex", longtable = TRUE, table.envir = "longtable") %>%
   kable_styling(
-    latex_options = c("striped", "hold_position", "scale_down", "repeat_header"),
-    full_width = F,
+    latex_options = c("striped", "hold_position", "repeat_header", "bordered"),
     repeat_header_text = "\\textit{(PLOTNAMEPLACEHOLDER...)}",
+    full_width = F,
     repeat_header_continued = "\\textit{(PLOTNAMEPLACEHOLDER Continued on Next Page...)}"
   ) %>%
   row_spec(0, bold = TRUE) %>%
-  kable_classic(full_width = F, html_font = "Arial") %>%
-  column_spec(1:9, border_left = TRUE)
+  # kable_classic(full_width = F, html_font = "Arial") %>%
+  column_spec(1:8, border_left = TRUE) %>%
+  column_spec(1, width = "0.5in") %>%  # Index column
+  column_spec(2, width = "1.5in") %>%  # id column (often longer)
+  column_spec(3, width = "1.0in") %>% # dbh
+  column_spec(4, width = "1.0in") %>% # health
+  column_spec(5, width = "1.0in") %>%  # standing
+  column_spec(6, width = "1.0in") %>%  # dhas.1
+  column_spec(7, width = "1.0in") %>%  # dhas.2
+  column_spec(8, width = "1.0in") %>%  # notes (adjust if needed)
+  # Ensure borders cover all columns if using manual specs like this
+  column_spec(1:num_cols, border_left = TRUE, border_right = TRUE)
 ```

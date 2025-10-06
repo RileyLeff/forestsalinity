@@ -3,6 +3,7 @@ ec_ms_cm_to_ppt_conversion = 0.495
 
 # brownsville plot ids
 # why is R plot indexed from 1 when others indexed from 0?
+# they are hard-coded now as a result
 plot_levels = ["R1", "R2", "R3", "R4", "H0", "H1", "H2", "H3", "H4", "H5", "H6", "H7", "M0", 
   "M1", "M2", "M3", "M4", "M5", "M6", "M7", "L0", "L1", "L2", "L3", "L4", "L5", "L6", "L7"]
 
@@ -10,4 +11,25 @@ plot_levels = ["R1", "R2", "R3", "R4", "H0", "H1", "H2", "H3", "H4", "H5", "H6",
 zone_levels = ["R", "H", "M", "L"]
 
 # different representations of "NA" in the dataset
+# this annoys me so much
+# please leave cells blank if you don't have data for them
 na_reprs = ["NA", "na", "NA "]
+
+# to catch spelling errors. if we find new valid spp, add it here.
+[known_spp]
+  Acerub = "Acer rubrum"
+  Acespp = "Acer spp"
+  Ileopa = "Ilex opaca"
+  Junvir = "Juniperus virginiana"
+  Liqamb = "Liquidambar styraciflua"
+  Morcer = "Morella cerifera"
+  Nyssyl = "Nyssa sylvatica"
+  Pintae = "Pinus taeda"
+  Unispp = "Unidentifiable spp"
+  Acepen = "Acer pensylvanicum"
+  Quespp = "Quercus spp"
+  Quebic = "Quercus bicolor"
+  Cartom = "Carya tomentosa"
+  Corflo = "Cornus florida"
+  Vacspp = "Vaccinium spp"
+  Quemic = "Quercus michauxii"
