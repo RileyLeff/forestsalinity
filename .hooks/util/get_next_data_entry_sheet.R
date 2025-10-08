@@ -1,4 +1,4 @@
-#source("exec/data_process/main.R") # Keep commented out if reading RDS directly
+# source("exec/data_process/main.R") # Keep commented out if reading RDS directly
 tree_census <- readRDS("tree_census.rds")
 library(stringr)
 library(lubridate) # Ensure lubridate is loaded if not already
@@ -66,7 +66,7 @@ z <- lapply(
       stringsAsFactors = FALSE # Good practice
     )
     # Fill with NAs if explicit NAs are preferred over default empty values
-    output_df[,] <- NA
+    output_df[, ] <- NA
 
 
     # Generate IDs only if there are stems
@@ -137,28 +137,31 @@ z <- lapply(
 
     # Sort the dataframe by tree number and trunk number
     if (nrow(output_df) > 0 && any(!is.na(output_df$id) & nchar(output_df$id) > 0)) {
-        # Use tryCatch for robustness in splitting
-        id_parts <- tryCatch({
-            stringr::str_split_fixed(output_df$id, "\\.", 4)
-        }, error = function(e) {
-            warning("Error splitting IDs: ", e$message)
-            matrix(NA_character_, nrow = nrow(output_df), ncol = 4) # Return NA matrix on error
-        })
-
-        # Ensure id_parts has at least 4 columns before accessing them
-        if (ncol(id_parts) >= 4) {
-            output_df$tree_num <- suppressWarnings(as.numeric(id_parts[, 3]))
-            output_df$trunk_num <- suppressWarnings(as.numeric(id_parts[, 4]))
-
-            # Sort by tree number, then trunk number, handling potential NAs in sorting columns
-            output_df <- output_df[order(output_df$tree_num, output_df$trunk_num, na.last = TRUE), ]
-
-            # Remove temporary columns
-            output_df$tree_num <- NULL
-            output_df$trunk_num <- NULL
-        } else {
-            warning("ID splitting did not produce enough parts for sorting.")
+      # Use tryCatch for robustness in splitting
+      id_parts <- tryCatch(
+        {
+          stringr::str_split_fixed(output_df$id, "\\.", 4)
+        },
+        error = function(e) {
+          warning("Error splitting IDs: ", e$message)
+          matrix(NA_character_, nrow = nrow(output_df), ncol = 4) # Return NA matrix on error
         }
+      )
+
+      # Ensure id_parts has at least 4 columns before accessing them
+      if (ncol(id_parts) >= 4) {
+        output_df$tree_num <- suppressWarnings(as.numeric(id_parts[, 3]))
+        output_df$trunk_num <- suppressWarnings(as.numeric(id_parts[, 4]))
+
+        # Sort by tree number, then trunk number, handling potential NAs in sorting columns
+        output_df <- output_df[order(output_df$tree_num, output_df$trunk_num, na.last = TRUE), ]
+
+        # Remove temporary columns
+        output_df$tree_num <- NULL
+        output_df$trunk_num <- NULL
+      } else {
+        warning("ID splitting did not produce enough parts for sorting.")
+      }
     }
 
     # Add extra empty rows at the end
@@ -186,12 +189,12 @@ lapply(
 
     # Ensure output directories exist
     if (!dir.exists(pdf_output_dir_abs)) {
-        print(paste("Creating directory:", pdf_output_dir_abs))
-        dir.create(pdf_output_dir_abs, showWarnings = TRUE, recursive = TRUE) # Show warnings now
+      print(paste("Creating directory:", pdf_output_dir_abs))
+      dir.create(pdf_output_dir_abs, showWarnings = TRUE, recursive = TRUE) # Show warnings now
     }
-     if (!dir.exists(rmd_output_dir_abs)) {
-        print(paste("Creating directory:", rmd_output_dir_abs))
-        dir.create(rmd_output_dir_abs, showWarnings = TRUE, recursive = TRUE) # Show warnings now
+    if (!dir.exists(rmd_output_dir_abs)) {
+      print(paste("Creating directory:", rmd_output_dir_abs))
+      dir.create(rmd_output_dir_abs, showWarnings = TRUE, recursive = TRUE) # Show warnings now
     }
 
     # Replace placeholder in the template
@@ -203,22 +206,25 @@ lapply(
 
     # Explicitly check if PDF directory exists before rendering
     if (!dir.exists(pdf_output_dir_abs)) {
-        warning(paste("PDF output directory still does not exist before rendering:", pdf_output_dir_abs))
+      warning(paste("PDF output directory still does not exist before rendering:", pdf_output_dir_abs))
     } else {
-        print(paste("PDF output directory confirmed:", pdf_output_dir_abs))
+      print(paste("PDF output directory confirmed:", pdf_output_dir_abs))
     }
 
     # Render the Rmd to PDF using absolute paths
     print(paste("Rendering PDF:", pdf_output_path_abs))
-    tryCatch({
+    tryCatch(
+      {
         rmarkdown::render(
           rmd_output_path_abs, # Use absolute path for input
           output_file = pdf_output_path_abs, # Use absolute path for output
           envir = new.env(parent = globalenv()) # Render in a clean environment
         )
-    }, error = function(e) {
+      },
+      error = function(e) {
         warning(paste("Failed to render", outname, ":", e$message))
-    })
+      }
+    )
   }
 )
 
