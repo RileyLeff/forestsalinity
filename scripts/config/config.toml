@@ -1,0 +1,41 @@
+[taxonomy]
+file = "scripts/config/taxonomy.toml"
+
+[surveys]
+file = "scripts/config/surveys.toml"
+
+[columns]
+canonical = [
+  "survey_id",
+  "date",
+  "site",
+  "zone",
+  "plot",
+  "tree_number",
+  "tree_code",
+  "trunk_number",
+  "genus",
+  "spp",
+  "dbh_mm",
+  "health",
+  "alive",
+  "standing",
+  "old_tag",
+  "notes"
+]
+
+[output]
+standardized_dir = "data/standardized"
+combined_csv = "output/tree_census_combined.csv"
+combined_parquet = "output/tree_census_combined.parquet"
+combined_rds = "tree_census.rds"
+combined_rds_backup = "tree_census_pre_update.rds"
+new_rows_csv = "output/tree_census_new_rows.csv"
+changed_rows_csv = "output/tree_census_changed_rows.csv"
+summary_md = "output/tree_census_summary.md"
+
+[datasheets]
+upcoming_survey_id = "Fall_2025"
+recent_prior_surveys = ["April_2025", "October_2024"]
+extra_blank_rows = 25
+historical_snapshot_columns = ["dhas.1", "dhas.2"]

@@ -1,0 +1,21 @@
+[[datasets]]
+name = "May 2024 Forest Census"
+survey_id = "May_2024"
+module = "scripts.adapt_2024_spring"
+source_csv = "data/forest_census/2024_spring.csv"
+site = "BRNV"
+
+[[datasets]]
+name = "October 2024 Forest Census"
+survey_id = "October_2024"
+module = "scripts.adapt_2024_fall"
+source_csv = "data/forest_census/2024_fall.csv"
+site = "BRNV"
+default_date = "2024-10-02"
+
+[[datasets]]
+name = "April 2025 Forest Census"
+survey_id = "April_2025"
+module = "scripts.adapt_2025_spring"
+source_csv = "data/forest_census/2025_spring.csv"
+site = "BRNV"

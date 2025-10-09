@@ -2,9 +2,17 @@
 tree_census <- readRDS("tree_census.rds")
 library(stringr)
 library(lubridate) # Ensure lubridate is loaded if not already
+library(RcppTOML)
 
-n <- 2 # Number of years threshold
-e <- 25 # Number of extra empty rows
+config <- RcppTOML::parseTOML("scripts/config/config.toml")
+recent_surveys <- unlist(config$datasheets$recent_prior_surveys)
+if (length(recent_surveys) == 0) {
+  stop("No recent_prior_surveys defined in scripts/config/config.toml")
+}
+e <- config$datasheets$extra_blank_rows
+if (is.null(e)) {
+  e <- 25
+}
 basesheet_path <- "base_next_census.rmd"
 
 con <- file(basesheet_path, "r")
@@ -35,12 +43,10 @@ z <- lapply(
         )
       ),
       \(y) {
-        # Filter out stems where all records are older than n years
-        if (all((lubridate::year(Sys.Date()) - lubridate::year(y$date)) > n)) {
+        if (!any(y$survey_id %in% recent_surveys)) {
           return(NULL)
-        } else {
-          return(y)
         }
+        return(y)
       }
     )
 
@@ -59,7 +65,8 @@ z <- lapply(
       id = character(num_stems),
       dbh = numeric(num_stems),
       health = numeric(num_stems),
-      standing = logical(num_stems),
+      stnd = character(num_stems),
+      p = character(num_stems),
       dhas.1 = character(num_stems),
       dhas.2 = character(num_stems),
       notes = character(num_stems),
@@ -97,35 +104,36 @@ z <- lapply(
 
         stem_df <- list_of_stems_in_this_plot[[stem_i]]
 
-        # Process 2023 data
-        which2023 <- which(lubridate::year(stem_df$date) == 2023)
-        if (length(which2023) > 0) {
-          # Take the first record if multiple exist for 2023
-          idx2023 <- which2023[1]
+        primary_survey <- recent_surveys[1]
+        secondary_survey <- if (length(recent_surveys) >= 2) recent_surveys[2] else NA
+
+        # Process most recent survey
+        which_primary <- which(stem_df$survey_id == primary_survey)
+        if (length(which_primary) > 0) {
+          idx_primary <- which_primary[1]
           temp_das1 <- paste(
-            stem_df[idx2023, "dbh_mm"],
-            as.numeric(stem_df[idx2023, "health"]),
-            as.numeric(stem_df[idx2023, "alive"]),
-            as.numeric(stem_df[idx2023, "standing"]),
+            stem_df[idx_primary, "dbh_mm"],
+            as.numeric(stem_df[idx_primary, "health"]),
+            as.numeric(stem_df[idx_primary, "alive"]),
+            as.numeric(stem_df[idx_primary, "standing"]),
             sep = "/"
           )
           output_df$dhas.1[stem_i] <- temp_das1
-        } # Implicitly leaves NA if no 2023 data
+        } # Implicitly leaves NA if no data for the primary survey
 
-        # Process 2022 data
-        which2022 <- which(lubridate::year(stem_df$date) == 2022)
-        if (length(which2022) > 0) {
-          # Take the first record if multiple exist for 2022
-          idx2022 <- which2022[1]
+        # Process second-most recent survey when defined
+        which_secondary <- which(stem_df$survey_id == secondary_survey)
+        if (!is.na(secondary_survey) && length(which_secondary) > 0) {
+          idx_secondary <- which_secondary[1]
           temp_das2 <- paste(
-            stem_df[idx2022, "dbh_mm"],
-            as.numeric(stem_df[idx2022, "health"]),
-            as.numeric(stem_df[idx2022, "alive"]),
-            as.numeric(stem_df[idx2022, "standing"]),
+            stem_df[idx_secondary, "dbh_mm"],
+            as.numeric(stem_df[idx_secondary, "health"]),
+            as.numeric(stem_df[idx_secondary, "alive"]),
+            as.numeric(stem_df[idx_secondary, "standing"]),
             sep = "/"
           )
           output_df$dhas.2[stem_i] <- temp_das2
-        } # Implicitly leaves NA if no 2022 data
+        } # Implicitly leaves NA if no data for the secondary survey
 
         # Add other relevant info if needed, e.g., old tags
         # output_df$oldtag[stem_i] <- paste(unique(stem_df$old_tag), collapse=", ")
@@ -170,6 +178,13 @@ z <- lapply(
     return(output_df)
   }
 )
+
+included_counts <- sapply(
+  z,
+  \(df) sum(!is.na(df$id) & nchar(df$id) > 0)
+)
+print("Included stems per plot (pre-blanks):")
+print(included_counts)
 
 # Render R Markdown files for each plot
 lapply(

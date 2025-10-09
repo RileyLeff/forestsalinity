@@ -1,0 +1,2 @@
+survey_id,date,site,zone,plot,tree_number,tree_code,trunk_number,genus,spp,dbh_mm,health,alive,standing,old_tag,notes
+April_2025,2025-04-29,BRNV,M,M5,2479,M5_2479_Nys,1,Nyssa,sylvatica,,0.0,True,True,,

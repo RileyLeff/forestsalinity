@@ -81,3 +81,4 @@ this_df %>%
   # Ensure borders cover all columns if using manual specs like this
   column_spec(1:num_cols, border_left = TRUE, border_right = TRUE)
 ```
+
