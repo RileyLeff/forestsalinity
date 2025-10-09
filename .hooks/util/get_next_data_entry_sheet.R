@@ -1,6 +1,5 @@
 # source("exec/data_process/main.R") # Keep commented out if reading RDS directly
 tree_census <- readRDS("tree_census.rds")
-library(stringr)
 library(lubridate) # Ensure lubridate is loaded if not already
 library(RcppTOML)
 
@@ -20,6 +19,67 @@ basesheet_contents <- readChar(con, nchars = file.info(basesheet_path)$size)
 close(con)
 
 current_wd_for_stupid_rmd <- getwd()
+
+has_recent_positive_status <- function(stem_df, surveys, column) {
+  relevant_rows <- stem_df$survey_id %in% surveys
+  if (!any(relevant_rows)) {
+    return(FALSE)
+  }
+  values <- stem_df[relevant_rows, column]
+  values <- suppressWarnings(as.logical(values))
+  return(any(values %in% TRUE, na.rm = TRUE))
+}
+
+should_include_stem <- function(stem_df, recent_surveys) {
+  alive_recent <- has_recent_positive_status(stem_df, recent_surveys, "alive")
+  standing_recent <- has_recent_positive_status(stem_df, recent_surveys, "standing")
+  return(alive_recent || standing_recent)
+}
+
+format_dhas_entry <- function(row, index) {
+  values <- c(
+    row[index, "dbh_mm"],
+    row[index, "health"],
+    row[index, "alive"],
+    row[index, "standing"]
+  )
+
+  formatted <- vapply(
+    values,
+    function(val) {
+      if (is.na(val)) {
+        return("")
+      }
+      if (is.logical(val)) {
+        return(as.character(as.integer(val)))
+      }
+      if (is.numeric(val)) {
+        return(as.character(val))
+      }
+      return(as.character(val))
+    },
+    character(1)
+  )
+
+  if (all(formatted == "")) {
+    return("")
+  }
+  paste(formatted, collapse = "/")
+}
+
+split_ids <- function(vec, n = 4) {
+  splits <- strsplit(vec, "\\.")
+  padded <- lapply(
+    splits,
+    function(parts) {
+      if (length(parts) >= n) {
+        return(parts[seq_len(n)])
+      }
+      c(parts, rep("", n - length(parts)))
+    }
+  )
+  do.call(rbind, padded)
+}
 
 z <- lapply(
   split(
@@ -44,6 +104,9 @@ z <- lapply(
       ),
       \(y) {
         if (!any(y$survey_id %in% recent_surveys)) {
+          return(NULL)
+        }
+        if (!should_include_stem(y, recent_surveys)) {
           return(NULL)
         }
         return(y)
@@ -111,28 +174,14 @@ z <- lapply(
         which_primary <- which(stem_df$survey_id == primary_survey)
         if (length(which_primary) > 0) {
           idx_primary <- which_primary[1]
-          temp_das1 <- paste(
-            stem_df[idx_primary, "dbh_mm"],
-            as.numeric(stem_df[idx_primary, "health"]),
-            as.numeric(stem_df[idx_primary, "alive"]),
-            as.numeric(stem_df[idx_primary, "standing"]),
-            sep = "/"
-          )
-          output_df$dhas.1[stem_i] <- temp_das1
+          output_df$dhas.1[stem_i] <- format_dhas_entry(stem_df, idx_primary)
         } # Implicitly leaves NA if no data for the primary survey
 
         # Process second-most recent survey when defined
         which_secondary <- which(stem_df$survey_id == secondary_survey)
         if (!is.na(secondary_survey) && length(which_secondary) > 0) {
           idx_secondary <- which_secondary[1]
-          temp_das2 <- paste(
-            stem_df[idx_secondary, "dbh_mm"],
-            as.numeric(stem_df[idx_secondary, "health"]),
-            as.numeric(stem_df[idx_secondary, "alive"]),
-            as.numeric(stem_df[idx_secondary, "standing"]),
-            sep = "/"
-          )
-          output_df$dhas.2[stem_i] <- temp_das2
+          output_df$dhas.2[stem_i] <- format_dhas_entry(stem_df, idx_secondary)
         } # Implicitly leaves NA if no data for the secondary survey
 
         # Add other relevant info if needed, e.g., old tags
@@ -148,7 +197,7 @@ z <- lapply(
       # Use tryCatch for robustness in splitting
       id_parts <- tryCatch(
         {
-          stringr::str_split_fixed(output_df$id, "\\.", 4)
+          split_ids(output_df$id, 4)
         },
         error = function(e) {
           warning("Error splitting IDs: ", e$message)
@@ -244,3 +293,18 @@ lapply(
 )
 
 print("Script finished.")
+has_recent_positive_status <- function(stem_df, surveys, column) {
+  inds <- stem_df$survey_id %in% surveys
+  if (!any(inds)) {
+    return(FALSE)
+  }
+  vals <- stem_df[inds, column]
+  vals <- suppressWarnings(as.logical(vals))
+  return(any(vals %in% TRUE, na.rm = TRUE))
+}
+
+should_include_stem <- function(stem_df, recent_surveys) {
+  alive_recent <- has_recent_positive_status(stem_df, recent_surveys, "alive")
+  standing_recent <- has_recent_positive_status(stem_df, recent_surveys, "standing")
+  return(alive_recent || standing_recent)
+}
